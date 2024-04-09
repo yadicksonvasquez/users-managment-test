@@ -29,7 +29,7 @@ public class PhoneDto {
 	@JsonProperty("citycode")
 	private String cityCode;
 
-	@JsonProperty("countrycode")
+	@JsonProperty("contrycode")
 	private String countryCode;
 
 }

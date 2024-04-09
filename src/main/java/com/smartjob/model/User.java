@@ -67,13 +67,13 @@ public class User {
 	@Column(name = "isactive")
 	private Boolean isActive;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@Builder.Default
 	private List<Phone> phones = new ArrayList<>();
 
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private List<Role> roles;
 
 }

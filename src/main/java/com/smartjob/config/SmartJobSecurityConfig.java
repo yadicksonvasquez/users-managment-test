@@ -5,6 +5,7 @@ package com.smartjob.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,8 +30,10 @@ public class SmartJobSecurityConfig {
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(
-				(authz) -> authz.requestMatchers("/h2-console/**").permitAll().anyRequest().authenticated());
+		http.authorizeHttpRequests((authz) -> authz.requestMatchers("/h2-console/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/users/").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/users/").hasRole(AppConstants.DEFAULT_USER_ROLE)
+				.anyRequest().authenticated());
 		http.csrf((csrf) -> csrf.disable());
 		http.headers((headers) -> headers.frameOptions((frame) -> frame.sameOrigin()));
 

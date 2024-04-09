@@ -35,7 +35,7 @@ public class Phone {
 	@Column(name = "ID", unique = true, nullable = false)
 	private BigInteger id;
 
-	@Column(name = "phonbe_number")
+	@Column(name = "phone_number")
 	private String phoneNumber;
 
 	@Column(name = "city_code")

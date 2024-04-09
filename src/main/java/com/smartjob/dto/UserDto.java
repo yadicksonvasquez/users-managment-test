@@ -29,8 +29,8 @@ public class UserDto {
 	private String name;
 
 	@NotNull(message = "correo no debe ser nulo")
-	@Email(message = "el correo no tiene formato valido")
 	@NotEmpty(message = "correo no debe ser vacio")
+	@Email(regexp = ".+[@].+[\\.].+")
 	private String email;
 
 	@NotNull(message = "password no debe ser nula")

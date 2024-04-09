@@ -36,7 +36,7 @@ public class UserDto {
 
 	@NotNull(message = "password no debe ser nula")
 	@NotEmpty(message = "password no debe ser vacio")
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@#$%^&+=]).{8,12}$", message = "debe tener al menos una minuscula, al menos una mayuscula, al menos 1 digito, al menos un simbolo especial @#$%^&+=, minima longitud 8 y maximo 20")
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$", message = "debe tener al menos una minuscula [a-z], al menos una mayuscula [A-Z], al menos 1 digito [0-9], al menos un simbolo especial  ! @ # & ( ), debe contener minimo longitud 8 y maximo 20 caracteres")
 	private String password;
 
 	@NotNull(message = "telefonos no debe ser nulo")

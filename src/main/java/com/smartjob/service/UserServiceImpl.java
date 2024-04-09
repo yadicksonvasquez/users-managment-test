@@ -3,9 +3,9 @@
  */
 package com.smartjob.service;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +21,7 @@ import com.smartjob.model.Phone;
 import com.smartjob.model.Role;
 import com.smartjob.model.User;
 import com.smartjob.model.repository.UserRepository;
+import com.smartjob.util.JwtTokenUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,15 +37,17 @@ public class UserServiceImpl implements UserServiceInterface {
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
 	private final RoleServiceInterface roleService;
+	private final JwtTokenUtil jwtTokenUtil;
 
 	/**
 	 * 
 	 */
-	public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder,
-			RoleServiceInterface roleService) {
+	public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleServiceInterface roleService,
+			JwtTokenUtil jwtTokenUtil) {
 		this.repository = repository;
 		this.passwordEncoder = passwordEncoder;
 		this.roleService = roleService;
+		this.jwtTokenUtil = jwtTokenUtil;
 	}
 
 	@Override
@@ -90,8 +93,11 @@ public class UserServiceImpl implements UserServiceInterface {
 
 				userEntity = this.repository.save(userEntity);
 
+				// set and save token JWT
+				String token = this.setTokenJWT(userEntity.getUserId());
+
 				return UserResponseDto.builder().id(userEntity.getUserId()).created(userEntity.getCreated())
-						.modified(userEntity.getModified()).lastLogin(userEntity.getLastLogin()).build();
+						.modified(userEntity.getModified()).lastLogin(userEntity.getLastLogin()).token(token).build();
 			}
 		} catch (Exception e) {
 			log.error("Error", e);
@@ -101,6 +107,29 @@ public class UserServiceImpl implements UserServiceInterface {
 				throw new SmartJobBusinessLogicException(e);
 			}
 		}
+	}
+
+	/**
+	 * Set JWT Token
+	 * 
+	 * @param entity
+	 * @throws SmartJobBusinessLogicException
+	 */
+	private String setTokenJWT(BigInteger userId) throws SmartJobBusinessLogicException {
+		String token = "";
+		try {
+			Optional<User> userOp = this.repository.findById(userId);
+			if (userOp.isPresent()) {
+				User user = userOp.get();
+				token = jwtTokenUtil.generateToken(user.getEmail());
+				user.setToken(token);
+				repository.save(user);
+			}
+		} catch (Exception e) {
+			log.error("Error", e);
+			throw new SmartJobBusinessLogicException(e);
+		}
+		return token;
 	}
 
 	/**
@@ -127,8 +156,9 @@ public class UserServiceImpl implements UserServiceInterface {
 	private void setDefaultRole(User userEntity) throws SmartJobBusinessLogicException {
 		try {
 			RoleDto role = this.roleService.getRolesByName(AppConstants.DEFAULT_USER_ROLE);
-			userEntity.setRoles(Arrays.asList(
-					Role.builder().id(role.getId()).name(role.getName()).users(Arrays.asList(userEntity)).build()));
+			List<Role> roles = new ArrayList<>();
+			roles.add(Role.builder().id(role.getId()).name(role.getName()).build());
+			userEntity.setRoles(roles);
 		} catch (SmartJobBusinessLogicException e) {
 			log.error("Error", e);
 			throw new SmartJobBusinessLogicException(e);

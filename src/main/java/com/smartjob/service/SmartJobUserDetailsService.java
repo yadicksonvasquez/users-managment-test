@@ -5,7 +5,6 @@ package com.smartjob.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,7 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.stereotype.Service;
 import com.smartjob.dto.RoleDto;
-import com.smartjob.dto.UserDto;
+import com.smartjob.model.User;
+import com.smartjob.model.repository.UserRepository;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -25,27 +26,27 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class SmartJobUserDetailsService implements UserDetailsService {
 
-	private final UserServiceInterface userService;
+	private final UserRepository userRepository;
 	private final RoleServiceInterface roleService;
 
 	/**
 	 * 
 	 */
-	public SmartJobUserDetailsService(UserServiceInterface userService, RoleServiceInterface roleService) {
-		this.userService = userService;
+	public SmartJobUserDetailsService(UserRepository userRepository, RoleServiceInterface roleService) {
+		this.userRepository = userRepository;
 		this.roleService = roleService;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
-			Optional<UserDto> userInfo = userService.loadUserByEmail(username);
-			if (userInfo.isEmpty()) {
+			User user = userRepository.findByEmail(username);
+			if (user == null) {
 				throw new UsernameNotFoundException("User " + username);
 			} else {
 				UserBuilder builder = org.springframework.security.core.userdetails.User.withUsername(username);
 				builder.disabled(false);
-				builder.password(userInfo.get().getPassword());
+				builder.password(user.getPassword());
 				// set Roles
 				builder.authorities(this.getAuthorities(username));
 				return builder.build();

@@ -1,4 +1,4 @@
-# API Restful Usuario Proyecto Prueba Yadickson Vasquez
+UsersManagmentTestApplication# API Restful Usuario Proyecto Prueba Yadickson Vasquez
 
 Aplicación API Restful de Usuarios para prueba Java.
 
@@ -59,7 +59,7 @@ curl --location 'localhost:8080/api/users/' \
 --header 'Cookie: JSESSIONID=B516378697F8EECD2D39679B34D94DF0'
 
 ## Iniciar Aplicación
-Run MsOauth2AuthorizationServerUtilApplication
+Ejecutar UsersManagmentTestApplication
 
 ### Dependencias
 
@@ -68,6 +68,7 @@ Run MsOauth2AuthorizationServerUtilApplication
 * spring-boot-starter-web
 * lombok
 * jakarta.validation-api
+* nimbus-jose-jwt
 
 
 ## Author

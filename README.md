@@ -14,7 +14,7 @@ Endpoints desarrollados:
 
 * <b>Crear Usuario</b>
 
-URL: http://localhost:8080/api/users/users. <br>
+URL: http://localhost:8080/api/users/<br>
 Tipo: POST. <br>
 Request Object: UserDto. <br>
 
@@ -44,13 +44,19 @@ curl --location 'localhost:8080/api/users/' \
 }'
 
 * <b>Obtener Usuarios</b>
+Para invocar este enpoint debe utilizar el Token JWT de algún usuario registrado en el sistema por el endpoint de crear usuario.
 
 URL: http://localhost:8080/api/users/users. <br>
 Tipo: GET. <br>
 
 Responses: <br>
 Status: 200 Lista de UserDto.<br>
+Status: 401 En caso de que el token JWT no sea autorizado.<br>
 
+Ejemplo:<br>
+curl --location 'localhost:8080/api/users/' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5YWRpY2tzb24iLCJzdWIiOiJqdWFuMkBkb21pbmlvLmNsIiwiZXhwIjoxNzEyNzk0NTI4LCJpYXQiOjE3MTI3MDgxMjh9.damlSioZzxd5e-68GhVJsefEEiNRkSi8jFKPd12kgoc' \
+--header 'Cookie: JSESSIONID=B516378697F8EECD2D39679B34D94DF0'
 
 ## Iniciar Aplicación
 Run MsOauth2AuthorizationServerUtilApplication

@@ -10,6 +10,8 @@ Al iniciar la aplicación se ejecuta automáticamente el script src/main/resourc
 
 Para acceder a la consola de la base de datos H2 debe ir a http://localhost:8080/h2-console/ el usuario es sa y la clave es vacía.
 
+La aplicación tiene open API Swagger onfigurado para acceder debe ir al link http://localhost:8080/swagger-ui/index.html
+
 Endpoints desarrollados:
 
 * <b>Crear Usuario</b>

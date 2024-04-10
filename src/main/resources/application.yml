@@ -20,3 +20,14 @@ spring:
 jwt:
  issuer: yadickson
  access_token_validate_seconds: 86400
+ 
+ # Swagger Open API info
+ swagger:
+   applicationDescription: API Restful de Usuarios Prueba Smart Jobs
+   applicationVersion: v1.0.0
+   applicationTitle: API Restful de Usuarios
+   termsOfService: http://swagger.io/terms
+   license: Apache 2.0
+   licenseUrl: http://springdoc.org
+   contactName: Yadickson Vasquez
+   contactEmail: yadicksonvasquez@gmail.com

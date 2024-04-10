@@ -97,7 +97,8 @@ public class UserServiceImpl implements UserServiceInterface {
 				String token = this.setTokenJWT(userEntity.getUserId());
 
 				return UserResponseDto.builder().id(userEntity.getUserId()).created(userEntity.getCreated())
-						.modified(userEntity.getModified()).lastLogin(userEntity.getLastLogin()).token(token).build();
+						.modified(userEntity.getModified()).lastLogin(userEntity.getLastLogin()).token(token)
+						.isActive(userEntity.getIsActive()).build();
 			}
 		} catch (Exception e) {
 			log.error("Error", e);

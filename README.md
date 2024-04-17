@@ -71,6 +71,7 @@ Ejecutar UsersManagmentTestApplication
 * lombok
 * jakarta.validation-api
 * nimbus-jose-jwt
+* springdoc-openapi-starter-webmvc-ui
 
 
 ## Author
